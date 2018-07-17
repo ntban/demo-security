@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" th:href="@{/css/card-page.css}" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+<script type="text/javascript" th:src="@{/js/dw_tooltip_c.js}" />
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+dw_Tooltip.defaultProps = {
+		 wrapFn: dw_Tooltip.wrapImageToWidth
+}
+	
+dw_Tooltip.content_vars = {
+	L1: {
+		 img: [[${image1}]],
+		 w: 300, 
+		 h: 400 
+	},
+	L2: {
+		 img: [[${image2}]],
+		 w: 300, 
+		 h: 400 
+	},
+	L3: {
+		 img: [[${image3}]],
+		 w: 300, 
+		 h: 400 
+	},
+	L4: {
+		 img: [[${image4}]],
+		 w: 300, 
+		 h: 400 
+	},
+	L5: {
+		 img: [[${image5}]],
+		 w: 300, 
+		 h: 400 
+	},
+	L6: {
+		 img: [[${image6}]],
+		 w: 300, 
+		 h: 400 
+	}	
+}
+/*]]>*/
+</script>
+</head>
+<body>
+<table>
+<tr >
+	<td th:each ="card : ${highCards}">
+		<label class="container">
+			<input type="radio" th:value="${card.id}" th:checked="${card.id}==1 ? 'checked' : ''" name="radio"/>
+			<span class="checkmark"></span>
+		</label>
+	</td>
+</tr>
+<tr>
+	<td  th:each ="card : ${highCards}">
+		<div class="thumbnail showTip" th:classappend="${card.showTipOrd}">
+			<img th:src="@{${'/images/' + card.image}}" class="portrait"/>
+		</div>
+	</td>
+</tr>
+<tr >
+	<td th:each ="card : ${lowCards}">
+		<label class="container">
+			<input type="radio" th:value="${card.id}" name="radio"/>
+			<span class="checkmark"></span>
+		</label>
+	</td>
+</tr>
+<tr >
+	<td th:each ="card : ${lowCards}">
+		<div class="thumbnail showTip" th:classappend="${card.showTipOrd}">
+			<img th:src="@{${'/images/' + card.image}}" class="portrait"/>
+		</div>
+	</td>
+</tr>
+</table>
+<div class="input-message-copy">
+	<input type="text" id="message-copy" autocomplete="off" placeholder="Type your hint..."/>
+<button type="submit">OK</button>
+</div>
+</body>
+</html>
