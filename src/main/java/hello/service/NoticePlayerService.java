@@ -28,4 +28,15 @@ public class NoticePlayerService {
 		
 		this.template.convertAndSend("/topic/publicChatRoom", chatMessage);
 	}
+	
+	
+	public void noticeStart(List<Player> players) {
+		ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setType(ChatMessage.MessageType.START);
+		for(Player p:players){
+			 chatMessage.setContent(p.getCards());
+		     chatMessage.setSender(p.getName());
+		     this.template.convertAndSendToUser(p.getName(),"/topic/publicChatRoom", chatMessage);
+		}
+	}
 }

@@ -64,15 +64,10 @@ html, body {
 #chat-container {
     border: 2px solid #d5dbdb;
     background-color:  #d5dbdb ;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-     
-    margin-top: 30px;
-    height: calc(100% - 60px);
-    max-height: 600px;
-    position: relative;
-     
+    width: 30%;
+    height: 80%;
+    float: left;
+    margin-left:2%;
 }
  
 #chat-container ul {
@@ -125,4 +120,23 @@ html, body {
     text-align: center;
     color: #777;
     width: 100%;
+}
+
+#owncard-container{
+	width: 33%;
+    height: 100%;
+    float: left;
+    background: red;
+}
+
+#playcard-container{
+	background: green;
+	width: 33%;
+    height: 100%;
+    float: left;
+    margin-left:2%;
+}
+
+#registerGame{
+	margin-top: 60px;
 }

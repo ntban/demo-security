@@ -4,6 +4,8 @@
 <link rel="stylesheet" th:href="@{/css/card-page.css}" />
 <link rel="stylesheet" th:href="@{/css/main.css}" />
 <script type="text/javascript" th:src="@{/js/dw_tooltip_c.js}" />
+<script th:src="@{/js/lib/jquery.min.js}"></script>
+<script th:src="@{/js/card-page.js}"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
 
@@ -59,7 +61,7 @@ dw_Tooltip.content_vars = {
 <tr>
 	<td  th:each ="card : ${highCards}">
 		<div class="thumbnail showTip" th:classappend="${card.showTipOrd}">
-			<img th:src="@{${'/images/' + card.image}}" class="portrait"/>
+			<img th:id="${card.showTipOrd}" th:src="@{${'/images/' + card.image}}" class="portrait"/>
 		</div>
 	</td>
 </tr>
@@ -74,14 +76,14 @@ dw_Tooltip.content_vars = {
 <tr >
 	<td th:each ="card : ${lowCards}">
 		<div class="thumbnail showTip" th:classappend="${card.showTipOrd}">
-			<img th:src="@{${'/images/' + card.image}}" class="portrait"/>
+			<img th:src="@{${'/images/' + card.image}}" class="portrait" th:id="${card.showTipOrd}"/>
 		</div>
 	</td>
 </tr>
 </table>
 <div class="input-message-copy">
 	<input type="text" id="message-copy" autocomplete="off" placeholder="Type your hint..."/>
-<button type="submit">OK</button>
+<button onclick="refresh()">OK</button>
 </div>
 </body>
 </html>

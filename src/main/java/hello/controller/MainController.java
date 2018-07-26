@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import hello.entity.Card;
 import hello.entity.Player;
@@ -150,5 +151,39 @@ public class MainController {
 
 		cardRepository.save(cards);
 		return "card-page";
+	}
+	
+	@RequestMapping(path = "/card-page", method = RequestMethod.POST)
+	public  @ResponseBody String refreshCardPage(Model model) {
+		List<Card> cards = cardRepository.getFirstSix();
+
+		List<Card> cards1 = new ArrayList<>();
+		String listImages = "";
+		
+		for (int i = 0; i < 3; i++) {
+			Card c = cards.get(i);
+			c.setShowTipOrd("L"+(i+1));
+			cards1.add(c);
+			
+			cards.get(i).setUsed("used");
+			model.addAttribute("image"+(i+1), "/images/"+c.getImage());
+			listImages+= "/images/"+c.getImage()+",";
+		}
+		model.addAttribute("highCards", cards1);
+
+		List<Card> cards2 = new ArrayList<>();
+		for (int i = 3; i < 6; i++) {
+			Card c = cards.get(i);
+			c.setShowTipOrd("L"+(i+1));
+			cards2.add(c);
+			cards.get(i).setUsed("used");
+			
+			model.addAttribute("image"+(i+1),"/images/"+c.getImage());
+			listImages+= "/images/"+c.getImage()+",";
+		}
+		model.addAttribute("lowCards", cards2);
+
+		cardRepository.save(cards);
+		return listImages;
 	}
 }

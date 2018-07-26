@@ -38,20 +38,22 @@ public class DixitController {
 		if (player == null || player.getFirstPlayer() == null) {
 			return "You can't start game!";
 		}
-		if(players.size()<4){
+		if (players.size() < 4) {
 			return "You can't start game when not have 4 players !";
 		}
 
 		createCards();
+		noticePlayerService.noticeStart(players);
+		
 		return "Game Started!";
 	}
 
 	@RequestMapping(path = "/registerGame", method = RequestMethod.POST)
 	public @ResponseBody String registerGame(HttpServletRequest request, Principal principal, Model model) {
-		if(players.size()==6){
+		if (players.size() == 6) {
 			return "Can't register anymore!";
 		}
-		
+
 		String username = principal.getName();
 
 		for (Player p : players) {
@@ -90,12 +92,18 @@ public class DixitController {
 
 		// set for players
 		int i = 0;
+		List<Card> cardUsed = new ArrayList<>();
 		for (Player p : players) {
 			String cardOfPlayer = "";
 			for (int j = 0; j < 6; j++) {
-				cardOfPlayer += cards.get(i++).getId() + ",";
+				Card c = cards.get(i);
+				cardOfPlayer += c.getId() + ",";
+				c.setUsed("used");
+				cardUsed.add(c);
+				i++;
 			}
 			p.setCards(cardOfPlayer);
 		}
+		cardRepository.save(cardUsed);
 	}
 }

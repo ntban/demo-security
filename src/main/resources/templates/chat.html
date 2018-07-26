@@ -3,16 +3,142 @@
 <head>
 <title>Spring Boot WebSocket</title>
 <link rel="stylesheet" th:href="@{/css/main.css}" />
+<link rel="stylesheet" th:href="@{/css/card-page.css}" />
 
 <script th:src="@{/js/lib/sockjs.min.js}"></script>
 <script th:src="@{/js/lib/stomp.min.js}"></script>
 <script th:src="@{/js/lib/jquery.min.js}"></script>
 
+<script type="text/javascript" th:src="@{/js/dw_tooltip_c.js}" />
+<script th:src="@{/js/card-page.js}"></script>
 </head>
 <script type="text/javascript">
-	
-   </script>
+	dw_Tooltip.defaultProps = {
+	    //supportTouch: true, // set false by default
+	    wrapFn: dw_Tooltip.wrapImageToWidth
+	}
+
+	// Problems, errors? See http://www.dyn-web.com/tutorials/obj_lit.php#syntax
+
+	dw_Tooltip.content_vars = {
+	    L1: {
+	        img: '/images/_90.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L2: {
+	        img: '/images/_91.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L3: {
+	        img: '/images/_92.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L4: {
+	        img: '/images/_93.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L5: {
+	        img: '/images/_94.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L6: {
+	        img: '/images/_95.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    }
+	}
+		
+</script>
 <body>
+	<div id="owncard-container">
+		<table>
+			<tr>
+				<td >
+				<label class="container">
+						<input type="radio" name="radio" id="radio1" checked="checked"/>
+						<span class="checkmark"></span>
+				</label>
+				</td>
+				<td  >
+				<label class="container">
+						<input type="radio" name="radio"/> 
+						<span class="checkmark"></span>
+				</label>
+				</td>
+				<td  >
+				<label class="container">
+					<input type="radio"	name="radio"/> 
+					<span class="checkmark"></span>
+				</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="thumbnail showTip L1">
+						<img src="/images/_90.jpg" class="portrait" id="image1" />
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L2">
+						<img src="/images/_91.jpg" class="portrait" />
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L3">
+						<img src="/images/_92.jpg" class="portrait" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td  >
+				<label class="container">
+					<input type="radio" name="radio"/> 
+					<span class="checkmark"></span>
+				</label>
+				</td>
+				<td  >
+				<label class="container">
+					<input type="radio" name="radio"/> 
+					<span class="checkmark"></span>
+					</label>
+				</td>
+				<td  >
+				<label class="container">
+					<input type="radio" name="radio"/> 
+					<span class="checkmark"></span>
+				</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="thumbnail  showTip L4">
+
+						<img src="/images/_93.jpg" class="portrait" />
+
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L5">
+						<img src="/images/_94.jpg" class="portrait" />
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L6">
+						<img src="/images/_95.jpg" class="portrait" />
+					</div>
+				</td>
+			</tr>
+		</table>
+
+	</div>
+	
+	<div id="playcard-container"></div>
+	
 	<div id="chat-container">
 		<div class="chat-header">
 			<div class="user-container">
@@ -34,25 +160,24 @@
 				<button type="submit">Send</button>
 			</div>
 		</form>
-	</div>
-	<div>
 
 		<form th:if="${session.player == null}" id="registerGame"
 			method="post" action="/registerGame">
-			<input type="button" value="Register Game"
-				onclick="registerGame()" />
+			<input type="button" value="Register Game" onclick="registerGame()" />
 		</form>
 
-		<div >
+		<div>
 			<p>
-				Currently there are <span id="messageCountPlayer" th:utext="${playerCount}" >0</span> players
-				joined.
+				Currently there are <span id="messageCountPlayer"
+					th:utext="${playerCount}">0</span> players joined.
 			</p>
-		<form id="formStartGame" method='post' action='/startGame'>
-				<input type="button" id="submitStartGame"  value="Start Game" onclick="startGame()" />
-		</form>
+			<form id="formStartGame" method='post' action='/startGame'>
+				<input type="button" id="submitStartGame" value="Start Game"
+					onclick="startGame()" />
+			</form>
 		</div>
 	</div>
+
 	<script th:src="@{/js/main.js}"></script>
 
 </body>
