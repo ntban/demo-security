@@ -38,8 +38,8 @@ public class DixitController {
 		if (player == null || player.getFirstPlayer() == null) {
 			return "You can't start game!";
 		}
-		if (players.size() < 4) {
-			return "You can't start game when not have 4 players !";
+		if (players.size() < 3) {
+			return "You can't start game when not have 3 players !";
 		}
 
 		createCards();
@@ -55,15 +55,15 @@ public class DixitController {
 		}
 
 		String username = principal.getName();
+		
+		if (username == null) {
+			return "Register Fail!";
+		}
 
 		for (Player p : players) {
 			if (p.getName().equals(username)) {
 				return "Already Register!";
 			}
-		}
-
-		if (username == null) {
-			return "Register Fail!";
 		}
 
 		if (players.size() == 0) {

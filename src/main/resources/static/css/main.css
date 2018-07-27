@@ -62,8 +62,8 @@ html, body {
 }
  
 #chat-container {
-    border: 2px solid #d5dbdb;
-    background-color:  #d5dbdb ;
+    border: 3px solid #aaa;
+    background-color: #eee ;
     width: 30%;
     height: 80%;
     float: left;
@@ -113,7 +113,16 @@ html, body {
  
 #messageForm .input-message  {
     float: left;
-    width: calc(100% - 85px);
+    width: 100%;
+}
+
+#message{
+	width: 80%;
+}
+
+#message-submit{
+	width: 15%;
+    float: right;	
 }
  
 .connecting {
@@ -126,11 +135,11 @@ html, body {
 	width: 33%;
     height: 100%;
     float: left;
-    background: red;
+    background: #e1f5fe;
 }
 
 #playcard-container{
-	background: green;
+	background: #e1f5fe;
 	width: 33%;
     height: 100%;
     float: left;
@@ -139,4 +148,14 @@ html, body {
 
 #registerGame{
 	margin-top: 60px;
+}
+
+#owncard-container-showhide{
+	width: 100%;
+	height: 100%;
+}
+
+#playcard-container-showhide{
+	width: 100%;
+	height: 100%;
 }

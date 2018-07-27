@@ -33,8 +33,15 @@ public class NoticePlayerService {
 	public void noticeStart(List<Player> players) {
 		ChatMessage chatMessage = new ChatMessage();
         chatMessage.setType(ChatMessage.MessageType.START);
+        
+        String rankBoard = ";";
+        
+        for(Player p:players){
+        	rankBoard+= p.getName()+":0,";
+        }
+        
 		for(Player p:players){
-			 chatMessage.setContent(p.getCards());
+			 chatMessage.setContent(p.getCards()+rankBoard);
 		     chatMessage.setSender(p.getName());
 		     this.template.convertAndSendToUser(p.getName(),"/topic/publicChatRoom", chatMessage);
 		}

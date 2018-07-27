@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Spring Boot WebSocket</title>
+<title>Dixit Game</title>
 <link rel="stylesheet" th:href="@{/css/main.css}" />
 <link rel="stylesheet" th:href="@{/css/card-page.css}" />
 
@@ -50,13 +50,45 @@
 	        img: '/images/_95.jpg',
 	        w: 300, // width of image
 	        h: 400 // height of image
+	    },
+	    L11: {
+	        img: '/images/_5.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L12: {
+	        img: '/images/_0.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L13: {
+	        img: '/images/_1.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L14: {
+	        img: '/images/_2.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L15: {
+	        img: '/images/_3.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
+	    },
+		L16: {
+	        img: '/images/_4.jpg',
+	        w: 300, // width of image
+	        h: 400 // height of image
 	    }
 	}
 		
 </script>
 <body>
 	<div id="owncard-container">
-		<table>
+		<div id="owncard-container-showhide">
+		<p id="owncard-name">Your current cards</p>
+		<table id="owncard-board">
 			<tr>
 				<td >
 				<label class="container">
@@ -80,17 +112,17 @@
 			<tr>
 				<td>
 					<div class="thumbnail showTip L1">
-						<img src="/images/_90.jpg" class="portrait" id="image1" />
+						<img src="/images/_90.jpg" class="portrait" id="L1" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail  showTip L2">
-						<img src="/images/_91.jpg" class="portrait" />
+						<img src="/images/_91.jpg" class="portrait" id="L2" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail  showTip L3">
-						<img src="/images/_92.jpg" class="portrait" />
+						<img src="/images/_92.jpg" class="portrait" id="L3" />
 					</div>
 				</td>
 			</tr>
@@ -118,26 +150,167 @@
 				<td>
 					<div class="thumbnail  showTip L4">
 
-						<img src="/images/_93.jpg" class="portrait" />
+						<img src="/images/_93.jpg" class="portrait" id="L4" />
 
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail  showTip L5">
-						<img src="/images/_94.jpg" class="portrait" />
+						<img src="/images/_94.jpg" class="portrait" id="L5" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail  showTip L6">
-						<img src="/images/_95.jpg" class="portrait" />
+						<img src="/images/_95.jpg" class="portrait" id="L6" />
 					</div>
 				</td>
 			</tr>
 		</table>
-
+		<form id="play-form">
+			<input type="text" id="your-hint" name ="your-hint" placeholder="Type your hint..."/>
+			
+			<input type="button" value="OK" onclick="playSubmit()" />
+		</form>
+		<table id="rank-board">
+			<tr>
+				<td>Player</td>
+				<td id="name-player0"></td>
+				<td id="name-player1"></td>
+				<td id="name-player2"></td>
+				<td id="name-player3"></td>
+				<td id="name-player4"></td>
+				<td id="name-player5"></td>
+			</tr>
+			<tr>
+				<td>Score</td>
+				<td id="score-player0"></td>
+				<td id="score-player1"></td>
+				<td id="score-player2"></td>
+				<td id="score-player3"></td>
+				<td id="score-player4"></td>
+				<td id="score-player5"></td>
+			</tr>
+		</table>
+		</div>
 	</div>
 	
-	<div id="playcard-container"></div>
+	<div id="playcard-container">
+	<div id="playcard-container-showhide">
+		<p id="playcard-name">Playing cards</p>
+		<table id="playcard-board">
+			<tr>
+				<td >
+				<label class="container">
+						<input type="radio" name="radio1" id="radio11" checked="checked"/>
+						<span class="checkmark"></span>
+				</label>
+				</td>
+				<td  >
+				<label class="container">
+						<input type="radio" name="radio1"/> 
+						<span class="checkmark"></span>
+				</label>
+				</td>
+				<td  >
+				<label class="container">
+					<input type="radio"	name="radio1"/> 
+					<span class="checkmark"></span>
+				</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="thumbnail showTip L11">
+						<img src="/images/_5.jpg" class="portrait" id="image1" />
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L12">
+						<img src="/images/_0.jpg" class="portrait" />
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L13">
+						<img src="/images/_1.jpg" class="portrait" />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td  >
+				<label class="container">
+					<input type="radio" name="radio1"/> 
+					<span class="checkmark"></span>
+				</label>
+				</td>
+				<td  >
+				<label class="container">
+					<input type="radio" name="radio1"/> 
+					<span class="checkmark"></span>
+					</label>
+				</td>
+				<td  >
+				<label class="container">
+					<input type="radio" name="radio1"/> 
+					<span class="checkmark"></span>
+				</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="thumbnail  showTip L14">
+
+						<img src="/images/_2.jpg" class="portrait" />
+
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L15">
+						<img src="/images/_3.jpg" class="portrait" />
+					</div>
+				</td>
+				<td>
+					<div class="thumbnail  showTip L16">
+						<img src="/images/_4.jpg" class="portrait" />
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div id="choose-area">
+			<p id="playing-hint">Ngôi nhà</p>
+			<button id="choose-button" onclick="chooseCard()">Choose</button>
+		</div>
+		
+		<table id="result-board">
+			<tr>
+				<td>Owner</td>
+				<td>Player 1</td>
+				<td>Player 2</td>
+				<td>Player 3</td>
+				<td>Player 4</td>
+				<td>Player 5</td>
+				<td>Player 6</td>
+			</tr>
+			<tr>
+				<td>Card</td>
+				<td><img src="/images/_5.jpg" class="card-result-board" /></td>
+				<td><img src="/images/_0.jpg" class="card-result-board" /></td>
+				<td><img src="/images/_1.jpg" class="card-result-board" /></td>
+				<td><img src="/images/_2.jpg" class="card-result-board" /></td>
+				<td><img src="/images/_3.jpg" class="card-result-board" /></td>
+				<td><img src="/images/_4.jpg" class="card-result-board" /></td>
+			</tr>
+			<tr>
+				<td>Chooser</td>
+				<td>2,3,4,5,6</td>
+				<td>Chooser</td>
+				<td>Chooser</td>
+				<td>Chooser</td>
+				<td>Chooser</td>
+				<td>Chooser</td>
+			</tr>
+		</table>
+	</div>
+	</div>
 	
 	<div id="chat-container">
 		<div class="chat-header">
@@ -157,7 +330,7 @@
 			<div class="input-message" style="margin-top: 10px;">
 				<input type="text" id="message" autocomplete="off"
 					placeholder="Type a message..." />
-				<button type="submit">Send</button>
+				<button type="submit" id="message-submit">Send</button>
 			</div>
 		</form>
 
@@ -167,7 +340,7 @@
 		</form>
 
 		<div>
-			<p>
+			<p id="player-count">
 				Currently there are <span id="messageCountPlayer"
 					th:utext="${playerCount}">0</span> players joined.
 			</p>
