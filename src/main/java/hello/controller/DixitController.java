@@ -24,11 +24,15 @@ import hello.service.NoticePlayerService;
 public class DixitController {
 	List<Card> cards;
 	ArrayList<Player> players = new ArrayList<>();
+	
+	int currentPlayer;
 
 	@Autowired
 	private PlayerRepository playerRepository;
+	
 	@Autowired
 	private CardRepository cardRepository;
+	
 	@Autowired
 	private NoticePlayerService noticePlayerService;
 
@@ -44,6 +48,7 @@ public class DixitController {
 
 		createCards();
 		noticePlayerService.noticeStart(players);
+		currentPlayer = 0;
 		
 		return "Game Started!";
 	}
@@ -97,7 +102,7 @@ public class DixitController {
 			String cardOfPlayer = "";
 			for (int j = 0; j < 6; j++) {
 				Card c = cards.get(i);
-				cardOfPlayer += c.getId() + ",";
+				cardOfPlayer += "images/"+c.getImage() + ",";
 				c.setUsed("used");
 				cardUsed.add(c);
 				i++;
