@@ -38,7 +38,7 @@ public class NoticePlayerService {
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
 
 		String firstOne = players.get(0).getName();
-		
+
 		String rankBoard = ";(**)" + firstOne + ":0,";
 
 		for (int i = 1; i < players.size(); i++) {
@@ -49,9 +49,28 @@ public class NoticePlayerService {
 		for (Player p : players) {
 			ChatMessage chatMessage = new ChatMessage();
 			chatMessage.setType(ChatMessage.MessageType.START);
-			chatMessage.setContent(p.getCards() + rankBoard+";" + firstOne);
+			chatMessage.setContent(p.getCards() + rankBoard + ";" + firstOne);
 			chatMessage.setSender(p.getName());
-			this.template.convertAndSendToUser(p.getName(), "/queue/start-game", chatMessage, map);
+			this.template.convertAndSendToUser(p.getName(), "/queue/play-game", chatMessage, map);
+		}
+	}
+
+	public void noticeChoose(List<Player> players, int currentPlayer, String hint) {
+		Map<String, Object> map = new HashMap<>();
+		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
+		String sender = players.get(currentPlayer).getName();
+
+		for (int i = 0; i < players.size(); i++) {
+			if (i == currentPlayer) {
+				continue;
+			}
+
+			ChatMessage chatMessage = new ChatMessage();
+			chatMessage.setType(ChatMessage.MessageType.CHOOSE);
+			chatMessage.setSender(sender);
+			chatMessage.setContent(hint);
+
+			this.template.convertAndSendToUser(players.get(i).getName(), "/queue/play-game", chatMessage, map);
 		}
 	}
 }

@@ -9,8 +9,8 @@
 <script th:src="@{/js/lib/stomp.min.js}"></script>
 <script th:src="@{/js/lib/jquery.min.js}"></script>
 
-<script type="text/javascript" th:src="@{/js/dw_tooltip_c.js}" />
-<script th:src="@{/js/card-page.js}"></script>
+<script th:src="@{/js/dw_tooltip_c.js}"></script>
+
 </head>
 <script type="text/javascript">
 	dw_Tooltip.defaultProps = {
@@ -93,19 +93,19 @@
 				<td >
 				<label class="container">
 						<input type="radio" name="radioOwn" id="radioOwn1" checked="checked"/>
-						<span class="checkmark"></span>
+						<span class="checkmark" onclick="checkRadio('radioOwn1')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 						<input type="radio" name="radioOwn" id="radioOwn2" /> 
-						<span class="checkmark"></span>
+						<span class="checkmark" onclick="checkRadio('radioOwn2')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio"	name="radioOwn" id="radioOwn3" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioOwn3')"></span>
 				</label>
 				</td>
 			</tr>
@@ -130,19 +130,19 @@
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioOwn" id="radioOwn4" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioOwn4')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioOwn" id="radioOwn5" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioOwn5')"></span>
 					</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioOwn" id="radioOwn6" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioOwn6')"></span>
 				</label>
 				</td>
 			</tr>
@@ -202,19 +202,19 @@
 				<td >
 				<label class="container">
 						<input type="radio" name="radioPlay" id="radioPlay1" checked="checked"/>
-						<span class="checkmark"></span>
+						<span class="checkmark" onclick="checkRadio('radioPlay1')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 						<input type="radio" name="radioPlay" id="radioPlay2" /> 
-						<span class="checkmark"></span>
+						<span class="checkmark" onclick="checkRadio('radioPlay2')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio"	name="radioPlay" id="radioPlay3" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioPlay3')"></span>
 				</label>
 				</td>
 			</tr>
@@ -239,19 +239,19 @@
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioPlay" id="radioPlay4" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioPlay4')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioPlay" id="radioPlay5" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioPlay5')"></span>
 					</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioPlay" id="radioPlay6" /> 
-					<span class="checkmark"></span>
+					<span class="checkmark" onclick="checkRadio('radioPlay6')"></span>
 				</label>
 				</td>
 			</tr>
@@ -352,6 +352,7 @@
 	</div>
 
 	<script th:src="@{/js/main.js}"></script>
-
+	<script th:src="@{/js/card-page.js}"></script>
+	<script th:src="@{/js/play.js}"></script>
 </body>
 </html>

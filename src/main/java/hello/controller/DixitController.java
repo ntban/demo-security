@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hello.entity.Card;
+import hello.entity.CardByTurn;
 import hello.entity.Player;
 import hello.repository.CardRepository;
 import hello.repository.PlayerRepository;
@@ -26,6 +27,8 @@ public class DixitController {
 	ArrayList<Player> players = new ArrayList<>();
 	
 	int currentPlayer;
+	
+	String started ="";
 
 	@Autowired
 	private PlayerRepository playerRepository;
@@ -49,13 +52,13 @@ public class DixitController {
 		createCards();
 		noticePlayerService.noticeStart(players);
 		currentPlayer = 0;
-		
+		started = "started";
 		return "Game Started!";
 	}
 
 	@RequestMapping(path = "/registerGame", method = RequestMethod.POST)
 	public @ResponseBody String registerGame(HttpServletRequest request, Principal principal, Model model) {
-		if (players.size() == 6) {
+		if (players.size() == 6 || started.equals("started")) {
 			return "Can't register anymore!";
 		}
 
@@ -90,6 +93,45 @@ public class DixitController {
 		model.addAttribute("username", username);
 
 		return "Register OK!";
+	}
+	
+	List<CardByTurn> cardByTurns = new ArrayList<>();
+	
+	@RequestMapping(path = "/hintOrder", method = RequestMethod.POST)
+	public @ResponseBody String hintOrder (HttpServletRequest request, Principal principal, Model model){
+		String username = principal.getName();
+		
+		if (username == null) {
+			return "Register Fail!";
+		}
+		
+		if(!username.equals(players.get(currentPlayer).getName())){
+			return "Not your turn!";
+		}
+		
+		String imageCard = (String)request.getParameter("imageCard");
+		String hint = (String)request.getParameter("hint");
+		CardByTurn card = new CardByTurn();
+		card.setHint(hint);
+		card.setImageCard(imageCard);
+		card.setOwner(username);
+		cardByTurns.add(card);
+		
+		//gửi event choose bài đến cho các player khác
+		noticePlayerService.noticeChoose (players, currentPlayer, hint);
+		
+		return "OK";
+	}
+	
+	@RequestMapping(path = "/chooseOrder", method = RequestMethod.POST)
+	public @ResponseBody String chooseOrder (HttpServletRequest request, Principal principal, Model model){
+		String username = principal.getName();
+		
+		if (username == null) {
+			return "Register Fail!";
+		}
+		
+		return "OK";
 	}
 
 	private void createCards() {
