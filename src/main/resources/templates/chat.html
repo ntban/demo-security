@@ -13,6 +13,9 @@
 
 </head>
 <script type="text/javascript">
+	var currentDixitHintPlayer = "";
+	var currentOwnImageCard = "";
+
 	dw_Tooltip.defaultProps = {
 	    //supportTouch: true, // set false by default
 	    wrapFn: dw_Tooltip.wrapImageToWidth
@@ -121,7 +124,7 @@
 					</div>
 				</td>
 				<td>
-					<div class="thumbnail  showTip L3">
+					<div class="thumbnail showTip L3">
 						<img src="/images/_92.jpg" class="portrait" id="L3" />
 					</div>
 				</td>
@@ -169,7 +172,7 @@
 		<form id="play-form">
 			<input type="text" id="your-hint" name ="your-hint" placeholder="Type your hint..."/>
 			
-			<input type="button" value="OK" onclick="playSubmit()" />
+			<input type="button" value="OK" onclick="playSubmit()" id="play-submit" />
 		</form>
 		<table id="rank-board">
 			<tr>
@@ -221,17 +224,17 @@
 			<tr>
 				<td>
 					<div class="thumbnail showTip L11">
-						<img src="/images/_5.jpg" class="portrait" id="image1" />
+						<img src="/images/_5.jpg" class="portrait" id="L11" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L12">
-						<img src="/images/_0.jpg" class="portrait" />
+						<img src="/images/_0.jpg" class="portrait" id="L12" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L13">
-						<img src="/images/_1.jpg" class="portrait" />
+						<img src="/images/_1.jpg" class="portrait" id="L13" />
 					</div>
 				</td>
 			</tr>
@@ -257,20 +260,20 @@
 			</tr>
 			<tr>
 				<td>
-					<div class="thumbnail  showTip L14">
+					<div class="thumbnail showTip L14">
 
-						<img src="/images/_2.jpg" class="portrait" />
+						<img src="/images/_2.jpg" class="portrait" id="L14" />
 
 					</div>
 				</td>
 				<td>
-					<div class="thumbnail  showTip L15">
-						<img src="/images/_3.jpg" class="portrait" />
+					<div class="thumbnail showTip L15">
+						<img src="/images/_3.jpg" class="portrait" id="L15" />
 					</div>
 				</td>
 				<td>
-					<div class="thumbnail  showTip L16">
-						<img src="/images/_4.jpg" class="portrait" />
+					<div class="thumbnail showTip L16">
+						<img src="/images/_4.jpg" class="portrait" id="L16" />
 					</div>
 				</td>
 			</tr>

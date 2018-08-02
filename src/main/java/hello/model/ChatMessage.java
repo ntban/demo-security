@@ -10,7 +10,8 @@ public class ChatMessage {
     	//for chat
         CHAT, JOIN, LEAVE, 
         //for game
-        PLAY, START, CHOOSE 
+        PLAY, START, CHOOSE, DONE_HINT,
+        SHOW_ONLY, SHOW_CHOOSE
     }
  
     public MessageType getType() {

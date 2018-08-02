@@ -1,61 +1,76 @@
-
 function onMessagePlayReceived(payload) {
 	var message = JSON.parse(payload.body);
-	
+
 	if (message.type === 'START') {
 		startGameWithCards(message);
-	}else if(message.type === 'CHOOSE'){
-		
+	} else if (message.type === 'CHOOSE') {
+		var hint = message.content;
+
+		$("#your-hint").val("Hint: " + hint);
+		$("#your-hint").attr('disabled', true);
+		$("#play-submit").attr('disabled', false);
+
+		alert("Please choose your card!");
+	} else if (message.type === 'DONE_HINT') {
+		$("input[name='radioOwn']").attr('disabled', true);
+		$("#your-hint").attr('disabled', true);
+		$("#play-submit").attr('disabled', true);
+	} else if (message.type === 'SHOW_ONLY') {
+		showImagePlayCards(message.content);
+		$("#choose-button").attr('disabled', true);
+	} else if (message.type === 'SHOW_CHOOSE') {
+		showImagePlayCards(message.content);
+		$("#choose-button").attr('disabled', false);
 	}
 }
 
-function startGameWithCards(message){
+function startGameWithCards(message) {
 	$('#formStartGame').hide();
 	$('#player-count').hide();
-	
+
 	var data = message.content.split(";");
-	
-	//6 fixed own cards
+
+	// 6 fixed own cards
 	var res = data[0].split(",");
-	var image1 = res[0], image2=res[1],image3=res[2],image4=res[3],image5=res[4],image6=res[5];
+	var image1 = res[0], image2 = res[1], image3 = res[2], image4 = res[3], image5 = res[4], image6 = res[5];
 	dw_Tooltip.content_vars = {
-			L1: {
-				 img: image1,
-				 w: 300, 
-				 h: 400 
-			},
-			L2: {
-				 img: image2,
-				 w: 300, 
-				 h: 400 
-			},
-			L3: {
-				 img: image3,
-				 w: 300, 
-				 h: 400 
-			},
-			L4: {
-				 img: image4,
-				 w: 300, 
-				 h: 400 
-			},
-			L5: {
-				 img: image5,
-				 w: 300, 
-				 h: 400 
-			},
-			L6: {
-				 img: image6,
-				 w: 300, 
-				 h: 400 
-			}	
+		L1 : {
+			img : image1,
+			w : 300,
+			h : 400
+		},
+		L2 : {
+			img : image2,
+			w : 300,
+			h : 400
+		},
+		L3 : {
+			img : image3,
+			w : 300,
+			h : 400
+		},
+		L4 : {
+			img : image4,
+			w : 300,
+			h : 400
+		},
+		L5 : {
+			img : image5,
+			w : 300,
+			h : 400
+		},
+		L6 : {
+			img : image6,
+			w : 300,
+			h : 400
 		}
-	$("#L1").attr("src",image1);
-	$("#L2").attr("src",image2);
-	$("#L3").attr("src",image3);
-	$("#L4").attr("src",image4);
-	$("#L5").attr("src",image5);
-	$("#L6").attr("src",image6);
+	}
+	$("#L1").attr("src", image1);
+	$("#L2").attr("src", image2);
+	$("#L3").attr("src", image3);
+	$("#L4").attr("src", image4);
+	$("#L5").attr("src", image5);
+	$("#L6").attr("src", image6);
 
 	$("#radioOwn1").val(image1);
 	$("#radioOwn2").val(image2);
@@ -63,31 +78,100 @@ function startGameWithCards(message){
 	$("#radioOwn4").val(image4);
 	$("#radioOwn5").val(image5);
 	$("#radioOwn6").val(image6);
-	
-	//set rank board
+
+	// set rank board
 	var players = data[1].split(",");
-	for(var i=0;i<players.length; i++){
-		if(!players[i]){
+	for (var i = 0; i < players.length; i++) {
+		if (!players[i]) {
 			break;
 		}
-		
+
 		var info = players[i].split(":");
-		$("#name-player"+i).html(info[0]);
-		$("#score-player"+i).html(info[1]);
+		$("#name-player" + i).html(info[0]);
+		$("#score-player" + i).html(info[1]);
 	}
-	
-	//set current player
+
+	// set current player
 	var username = $("#username").html();
 	var currentPlayer = data[2];
-	
-	if(username === currentPlayer){
+	currentDixitHintPlayer = currentPlayer;
+	if (username === currentPlayer) {
 		alert("Your turn!");
-	}else{
+	} else {
+		$("input[name='radioOwn']").attr('disabled', true);
 		$("#your-hint").prop('disabled', true);
+		$("#play-submit").attr('disabled', true);
+		$("#your-hint").attr("placeholder", "Wait for hint...");
 	}
-	
-	//show play area
+
+	// show play area
 	$("#owncard-container-showhide").show();
-	
-	//$("#playcard-container-showhide").show();
+
+}
+
+function showImagePlayCards(content) {
+	var data = content.split(";");
+	$("#playing-hint").val("Hint: " + data[0]);
+
+	// n-cards
+	var res = data[1].split(",");
+
+	dw_Tooltip.content_vars.L11 = {
+		img : res[0],
+		w : 300,
+		h : 400
+	};
+	$("#L11").attr("src", res[0]);
+	$("#radioPlay1").val(res[0]);
+
+	dw_Tooltip.content_vars.L12 = {
+		img : res[1],
+		w : 300,
+		h : 400
+	};
+	$("#L12").attr("src", res[1]);
+	$("#radioPlay2").val(res[1]);
+
+	dw_Tooltip.content_vars.L13 = {
+		img : res[2],
+		w : 300,
+		h : 400
+	};
+	$("#L13").attr("src", res[2]);
+	$("#radioPlay3").val(res[2]);
+
+	if (res.length >= 4) {
+		dw_Tooltip.content_vars.L14 = {
+			img : res[3],
+			w : 300,
+			h : 400
+		};
+		$("#L14").attr("src", res[3]);
+		$("#radioPlay4").val(res[3]);
+	}
+
+	if (res.length >= 5) {
+		dw_Tooltip.content_vars.L15 = {
+			img : res[4],
+			w : 300,
+			h : 400
+		};
+		$("#L15").attr("src", res[4]);
+		$("#radioPlay5").val(res[4]);
+	}
+
+	if (res.length >= 6) {
+		dw_Tooltip.content_vars.L16 = {
+			img : res[5],
+			w : 300,
+			h : 400
+		};
+		$("#L16").attr("src", res[5]);
+		$("#radioPlay6").val(res[5]);
+	}
+
+	currentOwnImageCard = data[2];
+
+	$("#playcard-container-showhide").show();
+	$("#result-board").hide();
 }

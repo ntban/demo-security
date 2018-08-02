@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import hello.entity.Card;
 import hello.entity.CardByTurn;
+import hello.entity.CardChoose;
 import hello.entity.Player;
 import hello.repository.CardRepository;
 import hello.repository.PlayerRepository;
@@ -24,7 +25,8 @@ import hello.service.NoticePlayerService;
 @Controller
 public class DixitController {
 	List<Card> cards;
-	ArrayList<Player> players = new ArrayList<>();
+	List<Player> players = new ArrayList<>();
+	List<Integer> scores ;
 	
 	int currentPlayer;
 	
@@ -53,6 +55,11 @@ public class DixitController {
 		noticePlayerService.noticeStart(players);
 		currentPlayer = 0;
 		started = "started";
+		scores = new ArrayList<>();
+		for(int i=0;i<players.size();i++){
+			scores.add(0);
+		}
+		
 		return "Game Started!";
 	}
 
@@ -109,8 +116,8 @@ public class DixitController {
 			return "Not your turn!";
 		}
 		
-		String imageCard = (String)request.getParameter("imageCard");
-		String hint = (String)request.getParameter("hint");
+		String imageCard = request.getParameter("imageCard");
+		String hint = request.getParameter("hint");
 		CardByTurn card = new CardByTurn();
 		card.setHint(hint);
 		card.setImageCard(imageCard);
@@ -120,18 +127,86 @@ public class DixitController {
 		//gửi event choose bài đến cho các player khác
 		noticePlayerService.noticeChoose (players, currentPlayer, hint);
 		
-		return "OK";
+		return "Done!";
 	}
 	
 	@RequestMapping(path = "/chooseOrder", method = RequestMethod.POST)
 	public @ResponseBody String chooseOrder (HttpServletRequest request, Principal principal, Model model){
+		if(cardByTurns.size() == players.size()){
+			return "Can't choose anymore!";
+		}
+		
+		String username = principal.getName();
+		
+		if (username == null) {
+			return "Register Fail!";
+		}
+		String imageCard = request.getParameter("imageCard");
+		
+		CardByTurn card = new CardByTurn();
+		card.setImageCard(imageCard);
+		card.setOwner(username);
+		cardByTurns.add(card);
+		
+		if(cardByTurns.size() == players.size()){
+			//gửi event show bài cho chọn
+			noticePlayerService.noticeShowCard (cardByTurns, players, currentPlayer);
+		}
+		
+		return "Done!";
+	}
+	
+	List<CardChoose> cardGetScore = new ArrayList<>();
+	
+	@RequestMapping(path = "/chooseGetScore", method = RequestMethod.POST)
+	public @ResponseBody String chooseGetScore (HttpServletRequest request, Principal principal, Model model){
+		if(cardGetScore.size() == players.size() - 1){
+			return "Can't choose anymore!";
+		}
+		
 		String username = principal.getName();
 		
 		if (username == null) {
 			return "Register Fail!";
 		}
 		
-		return "OK";
+		if(username.equals(players.get(currentPlayer).getName())){
+			return "It's your turn! You can't choose!";
+		}
+		
+		String imageCard = request.getParameter("imageCard");
+		//TODO: check tự chọn bài mình
+		for(CardByTurn card:cardByTurns){
+			if(card.getOwner().equals(username) && card.getImageCard().equals(imageCard)){
+				return "You can't choose your card!";
+			}
+		}
+		
+		CardChoose cardChoose = new CardChoose();
+		cardChoose.setChooser(username);
+		cardChoose.setImageCard(imageCard);
+		String owner = "";
+		for(CardByTurn card:cardByTurns){
+			if(card.getImageCard().equals(imageCard) ){
+				owner = card.getOwner();
+				break;
+			}
+		}
+		cardChoose.setOwner(owner);
+		cardGetScore.add(cardChoose);
+		
+		if(cardGetScore.size() == players.size() - 1){
+			//TODO: thông báo điểm và báo kết quả
+			calculateScore();
+		}
+		
+		return "Done!";
+	}
+
+	private void calculateScore() {
+		String currentPlayerName = players.get(currentPlayer).getName();
+		
+		
 	}
 
 	private void createCards() {
