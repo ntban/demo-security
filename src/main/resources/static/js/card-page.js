@@ -1,6 +1,5 @@
 function playSubmit(){
 	var username = $("#username").html();
-}
 	if(currentDixitHintPlayer == username){// give hint and card 
 		
 		var hint = $('#your-hint').val();
@@ -39,12 +38,24 @@ function playSubmit(){
 
 function chooseCard(){
 	var imageCard = $("input[name='radioPlay']:checked").val();
-}
 	if(currentOwnImageCard == imageCard){
 		alert("You can't choose your card!");
 		return;
 	}
 	
+	$.ajax({
+	    type: "POST",
+	    url: "/chooseGetScore",
+	    data: {imageCard: imageCard},
+	    success: function(data){
+	    	if(data === "Register Fail!"){
+				window.location.href = "login";
+				return;
+			}
+	    	
+	    	alert(data);
+	    }
+	});
 	
 }
 

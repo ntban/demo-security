@@ -20,71 +20,6 @@
 	    //supportTouch: true, // set false by default
 	    wrapFn: dw_Tooltip.wrapImageToWidth
 	}
-
-	// Problems, errors? See http://www.dyn-web.com/tutorials/obj_lit.php#syntax
-
-	dw_Tooltip.content_vars = {
-	    L1: {
-	        img: '/images/_90.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L2: {
-	        img: '/images/_91.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L3: {
-	        img: '/images/_92.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L4: {
-	        img: '/images/_93.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L5: {
-	        img: '/images/_94.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L6: {
-	        img: '/images/_95.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-	    L11: {
-	        img: '/images/_5.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L12: {
-	        img: '/images/_0.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L13: {
-	        img: '/images/_1.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L14: {
-	        img: '/images/_2.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L15: {
-	        img: '/images/_3.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    },
-		L16: {
-	        img: '/images/_4.jpg',
-	        w: 300, // width of image
-	        h: 400 // height of image
-	    }
-	}
 		
 </script>
 <body>
@@ -115,17 +50,17 @@
 			<tr>
 				<td>
 					<div class="thumbnail showTip L1">
-						<img src="/images/_90.jpg" class="portrait" id="L1" />
+						<img class="portrait" id="L1" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail  showTip L2">
-						<img src="/images/_91.jpg" class="portrait" id="L2" />
+						<img class="portrait" id="L2" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L3">
-						<img src="/images/_92.jpg" class="portrait" id="L3" />
+						<img class="portrait" id="L3" />
 					</div>
 				</td>
 			</tr>
@@ -153,18 +88,18 @@
 				<td>
 					<div class="thumbnail showTip L4">
 
-						<img src="/images/_93.jpg" class="portrait" id="L4" />
+						<img class="portrait" id="L4" />
 
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L5">
-						<img src="/images/_94.jpg" class="portrait" id="L5" />
+						<img class="portrait" id="L5" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L6">
-						<img src="/images/_95.jpg" class="portrait" id="L6" />
+						<img class="portrait" id="L6" />
 					</div>
 				</td>
 			</tr>
@@ -224,17 +159,17 @@
 			<tr>
 				<td>
 					<div class="thumbnail showTip L11">
-						<img src="/images/_5.jpg" class="portrait" id="L11" />
+						<img class="portrait" id="L11" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L12">
-						<img src="/images/_0.jpg" class="portrait" id="L12" />
+						<img class="portrait" id="L12" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L13">
-						<img src="/images/_1.jpg" class="portrait" id="L13" />
+						<img class="portrait" id="L13" />
 					</div>
 				</td>
 			</tr>
@@ -242,19 +177,19 @@
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioPlay" id="radioPlay4" /> 
-					<span class="checkmark" onclick="checkRadio('radioPlay4')"></span>
+					<span id="checkmarkL14" class="checkmark" onclick="checkRadio('radioPlay4')"></span>
 				</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioPlay" id="radioPlay5" /> 
-					<span class="checkmark" onclick="checkRadio('radioPlay5')"></span>
+					<span id="checkmarkL15" class="checkmark" onclick="checkRadio('radioPlay5')"></span>
 					</label>
 				</td>
 				<td  >
 				<label class="container">
 					<input type="radio" name="radioPlay" id="radioPlay6" /> 
-					<span class="checkmark" onclick="checkRadio('radioPlay6')"></span>
+					<span id="checkmarkL16" class="checkmark" onclick="checkRadio('radioPlay6')"></span>
 				</label>
 				</td>
 			</tr>
@@ -262,54 +197,54 @@
 				<td>
 					<div class="thumbnail showTip L14">
 
-						<img src="/images/_2.jpg" class="portrait" id="L14" />
+						<img class="portrait" id="L14" />
 
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L15">
-						<img src="/images/_3.jpg" class="portrait" id="L15" />
+						<img class="portrait" id="L15" />
 					</div>
 				</td>
 				<td>
 					<div class="thumbnail showTip L16">
-						<img src="/images/_4.jpg" class="portrait" id="L16" />
+						<img class="portrait" id="L16" />
 					</div>
 				</td>
 			</tr>
 		</table>
 		<div id="choose-area">
-			<p id="playing-hint">Ngôi nhà</p>
+			<p id="playing-hint"></p>
 			<button id="choose-button" onclick="chooseCard()">Choose</button>
 		</div>
 		
 		<table id="result-board">
 			<tr>
 				<td>Owner</td>
-				<td>Player 1</td>
-				<td>Player 2</td>
-				<td>Player 3</td>
-				<td>Player 4</td>
-				<td>Player 5</td>
-				<td>Player 6</td>
+				<td id="owner-player0"></td>
+				<td id="owner-player1"></td>
+				<td id="owner-player2"></td>
+				<td id="owner-player3"></td>
+				<td id="owner-player4"></td>
+				<td id="owner-player5"></td>
 			</tr>
 			<tr>
 				<td>Card</td>
-				<td><img src="/images/_5.jpg" class="card-result-board" /></td>
-				<td><img src="/images/_0.jpg" class="card-result-board" /></td>
-				<td><img src="/images/_1.jpg" class="card-result-board" /></td>
-				<td><img src="/images/_2.jpg" class="card-result-board" /></td>
-				<td><img src="/images/_3.jpg" class="card-result-board" /></td>
-				<td><img src="/images/_4.jpg" class="card-result-board" /></td>
+				<td><img id="image-playingcard0" class="card-result-board" /></td>
+				<td><img id="image-playingcard1" class="card-result-board" /></td>
+				<td><img id="image-playingcard2" class="card-result-board" /></td>
+				<td><img id="image-playingcard3" class="card-result-board" /></td>
+				<td><img id="image-playingcard4" class="card-result-board" /></td>
+				<td><img id="image-playingcard5" class="card-result-board" /></td>
 			</tr>
 			<tr>
 				<td>Chooser</td>
-				<td>2,3,4,5,6</td>
-				<td>Chooser</td>
-				<td>Chooser</td>
-				<td>Chooser</td>
-				<td>Chooser</td>
-				<td>Chooser</td>
+				<td id="choosers-card0"></td>
+				<td id="choosers-card1"></td>
+				<td id="choosers-card2"></td>
+				<td id="choosers-card3"></td>
+				<td id="choosers-card4"></td>
+				<td id="choosers-card5"></td>
 			</tr>
 		</table>
 	</div>

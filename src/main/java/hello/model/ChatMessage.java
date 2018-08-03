@@ -11,7 +11,8 @@ public class ChatMessage {
         CHAT, JOIN, LEAVE, 
         //for game
         PLAY, START, CHOOSE, DONE_HINT,
-        SHOW_ONLY, SHOW_CHOOSE
+        SHOW_ONLY, SHOW_CHOOSE,
+        SHOW_RESULT
     }
  
     public MessageType getType() {
