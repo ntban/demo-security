@@ -64,7 +64,7 @@ function onMessageReceived(payload) {
 
 	if (message.type === 'JOIN') {
 		messageElement.classList.add('event-message');
-		message.content = message.sender + ' joined!';
+		message.content = message.sender + ' đã vào phòng chat!';
 	} else if (message.type === 'LEAVE') {
 		messageElement.classList.add('event-message');
 		message.content = message.sender + ' left!';
@@ -93,3 +93,10 @@ function onMessageReceived(payload) {
 }
 
 messageForm.addEventListener('submit', sendMessage, true);
+
+$('#your-hint').keypress(function (e) {
+	  if (e.which == 13) {
+		playSubmit();
+	    return false;    //<---- Add this line
+	  }
+});

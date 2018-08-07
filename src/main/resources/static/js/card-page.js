@@ -10,7 +10,7 @@ function playSubmit(){
 		    url: "/hintOrder",
 		    data: {hint: hint, imageCard: imageCard},
 		    success: function(data){
-		    	if(data === "Register Fail!"){
+		    	if(data === "Chưa đăng ký chơi!"){
 					window.location.href = "login";
 					return;
 				}
@@ -26,7 +26,7 @@ function playSubmit(){
 		    url: "/chooseOrder",
 		    data: {imageCard: imageCard},
 		    success: function(data){
-		    	if(data === "Register Fail!"){
+		    	if(data === "Chưa đăng ký chơi!"){
 					window.location.href = "login";
 					return;
 				}
@@ -39,7 +39,7 @@ function playSubmit(){
 function chooseCard(){
 	var imageCard = $("input[name='radioPlay']:checked").val();
 	if(currentOwnImageCard == imageCard){
-		alert("You can't choose your card!");
+		alert("Bạn không thể tự chọn bài mình!");
 		return;
 	}
 	
@@ -48,7 +48,7 @@ function chooseCard(){
 	    url: "/chooseGetScore",
 	    data: {imageCard: imageCard},
 	    success: function(data){
-	    	if(data === "Register Fail!"){
+	    	if(data === "Chưa đăng ký chơi!"){
 				window.location.href = "login";
 				return;
 			}
@@ -65,21 +65,21 @@ function checkRadio(idSpan){
 
 function registerGame() {
 	$.post("/registerGame", function(data, status) {
-		if(data === "Register Fail!"){
+		if(data === "Chưa đăng ký chơi!"){
 			window.location.href = "login";
 			return;
 		}
 		
 		$("#registerGame").hide();
 		$("#formStartGame").show();
-		$('#player-count').css('margin-top',"50px");
+		$('#player-count').css('margin-top',"70px");
 		alert(data);
 	});
 }
 
 function startGame() {
 	$.post("/startGame", function(data, status) {
-		if(data != "Game Started!"){
+		if(data != "Bắt đầu chơi!"){
 			alert(data);
 		}
 	});

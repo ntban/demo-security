@@ -6,11 +6,11 @@ function onMessagePlayReceived(payload) {
 	} else if (message.type === 'CHOOSE') {
 		var hint = message.content;
 
-		$("#your-hint").val("Hint: " + hint);
+		$("#your-hint").val("Gợi ý: " + hint);
 		$("#your-hint").attr('disabled', true);
 		$("#play-submit").attr('disabled', false);
 
-		alert("Please choose your card!");
+		alert("Mời bạn đưa bài!");
 	} else if (message.type === 'DONE_HINT') {
 		$("input[name='radioOwn']").attr('disabled', true);
 		$("#your-hint").attr('disabled', true);
@@ -23,12 +23,21 @@ function onMessagePlayReceived(payload) {
 		$("#choose-button").attr('disabled', false);
 	} else if (message.type === 'SHOW_RESULT') {
 		showResultRound(message.content);
+	}else if(message.type === 'GAME_OVER'){
+		
+		$("#choose-button").attr('disabled', true);
+		$("#your-hint").attr('disabled', true);
+		$("#play-submit").attr('disabled', true);
+		$("#choose-button").attr('disabled', true);
+		
+		alert(message.content);
 	}
 }
 
 function startGameWithCards(message) {
 	$('#formStartGame').hide();
 	$('#player-count').hide();
+	$("#playcard-container-showhide").hide();
 
 	var data = message.content.split(";");
 
@@ -98,12 +107,17 @@ function startGameWithCards(message) {
 	var currentPlayer = data[2];
 	currentDixitHintPlayer = currentPlayer;
 	if (username === currentPlayer) {
-		alert("Your turn!");
+		$("input[name='radioOwn']").attr('disabled', true);
+		$("#your-hint").prop('disabled', false);
+		$("#play-submit").attr('disabled', false);
+		$("#your-hint").html("");
+		$("#your-hint").attr("placeholder", "Mời nhập gợi ý..");
 	} else {
 		$("input[name='radioOwn']").attr('disabled', true);
 		$("#your-hint").prop('disabled', true);
 		$("#play-submit").attr('disabled', true);
-		$("#your-hint").attr("placeholder", "Wait for hint...");
+		$("#your-hint").html("");
+		$("#your-hint").attr("placeholder", "Chờ gợi ý..");
 	}
 
 	// show play area
@@ -113,7 +127,7 @@ function startGameWithCards(message) {
 
 function showImagePlayCards(content) {
 	var data = content.split(";");
-	$("#playing-hint").html("Hint: " + data[0]);
+	$("#playing-hint").html("Gợi ý: " + data[0]);
 
 	// n-cards
 	var res = data[1].split(",");
@@ -206,9 +220,6 @@ function showResultRound(content){
 		$("#image-playingcard"+i).attr("src", playerInfo[1]);
 		$("#choosers-card"+i).html(playerInfo[2]);
 	}
+	$("#result-board").show();
 	
-	var millisecondsToWait = 10*1000;
-	setTimeout(function() {
-	    
-	}, millisecondsToWait);
 }

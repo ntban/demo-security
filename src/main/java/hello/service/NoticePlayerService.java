@@ -35,23 +35,26 @@ public class NoticePlayerService {
 		this.template.convertAndSend("/topic/publicChatRoom", notice);
 	}
 
-	public void noticeStart(List<Player> players) {
+	public void noticeStart(List<Player> players, int currentPlayer, HashMap<String, Integer> scores) {
 		Map<String, Object> map = new HashMap<>();
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
 
-		String firstOne = players.get(0).getName();
+		String hintGiver = players.get(currentPlayer).getName();
 
-		String rankBoard = ";(**)" + firstOne + ":0,";
+		String rankBoard = ";(**)" + hintGiver + ":" + scores.get(hintGiver) + ",";
 
-		for (int i = 1; i < players.size(); i++) {
+		for (int i = 0; i < players.size(); i++) {
+			if (i == currentPlayer) {
+				continue;
+			}
 			Player p = players.get(i);
-			rankBoard += p.getName() + ":0,";
+			rankBoard += p.getName() + ":" + scores.get(p.getName()) + ",";
 		}
 
 		for (Player p : players) {
 			ChatMessage notice = new ChatMessage();
 			notice.setType(ChatMessage.MessageType.START);
-			notice.setContent(p.getCards() + rankBoard + ";" + firstOne);
+			notice.setContent(p.getCards() + rankBoard + ";" + hintGiver);
 			notice.setSender(p.getName());
 			this.template.convertAndSendToUser(p.getName(), "/queue/play-game", notice, map);
 		}
@@ -140,7 +143,7 @@ public class NoticePlayerService {
 	}
 
 	public void showResult(List<Player> players, HashMap<String, Integer> scores,
-			HashMap<CardByTurn, List<String>> scoreGet) {
+			HashMap<CardByTurn, List<String>> scoreGet, HashMap<String, CardByTurn> cardWithOwner) {
 		// TODO: cập nhật điểm
 		String messageContent = "";
 
@@ -153,23 +156,39 @@ public class NoticePlayerService {
 
 		// TODO: hiện thị kết quả
 
-		for (CardByTurn card : scoreGet.keySet()) {
-			messageContent += card.getOwner() + ":" + card.getImageCard() + ":";
+		for (String owner : cardWithOwner.keySet()) {
+			CardByTurn card = cardWithOwner.get(owner);
+			messageContent += owner + ":" + card.getImageCard() + ":";
 
 			List<String> choosers = scoreGet.get(card);
-			for (String chooser : choosers) {
-				messageContent += chooser + " ";
+			if (choosers != null) {
+				for (String chooser : choosers) {
+					messageContent += chooser + " ";
+				}
 			}
 			messageContent += ",";
 		}
 		messageContent = messageContent.substring(0, messageContent.length() - 1);
-		
+
 		Map<String, Object> map = new HashMap<>();
 		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
 		for (Player p : players) {
 			String username = p.getName();
 			ChatMessage showResult = new ChatMessage();
 			showResult.setType(ChatMessage.MessageType.SHOW_RESULT);
+			showResult.setSender(username);
+			showResult.setContent(messageContent);
+			this.template.convertAndSendToUser(username, "/queue/play-game", showResult, map);
+		}
+	}
+
+	public void noticeGameOver(List<Player> players, String messageContent) {
+		Map<String, Object> map = new HashMap<>();
+		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
+		for (Player p : players) {
+			String username = p.getName();
+			ChatMessage showResult = new ChatMessage();
+			showResult.setType(ChatMessage.MessageType.GAME_OVER);
 			showResult.setSender(username);
 			showResult.setContent(messageContent);
 			this.template.convertAndSendToUser(username, "/queue/play-game", showResult, map);

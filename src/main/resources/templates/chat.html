@@ -25,7 +25,7 @@
 <body>
 	<div id="owncard-container">
 		<div id="owncard-container-showhide">
-		<p id="owncard-name">Your current cards</p>
+		<p id="owncard-name">Những lá bài hiện tại của bạn</p>
 		<table id="owncard-board">
 			<tr>
 				<td >
@@ -105,13 +105,13 @@
 			</tr>
 		</table>
 		<form id="play-form">
-			<input type="text" id="your-hint" name ="your-hint" placeholder="Type your hint..."/>
+			<input type="text" id="your-hint" name ="your-hint" placeholder="Mời nhập gợi ý..."/>
 			
 			<input type="button" value="OK" onclick="playSubmit()" id="play-submit" />
 		</form>
 		<table id="rank-board">
 			<tr>
-				<td>Player</td>
+				<td>Người chơi</td>
 				<td id="name-player0"></td>
 				<td id="name-player1"></td>
 				<td id="name-player2"></td>
@@ -120,7 +120,7 @@
 				<td id="name-player5"></td>
 			</tr>
 			<tr>
-				<td>Score</td>
+				<td>Điểm</td>
 				<td id="score-player0"></td>
 				<td id="score-player1"></td>
 				<td id="score-player2"></td>
@@ -134,7 +134,7 @@
 	
 	<div id="playcard-container">
 	<div id="playcard-container-showhide">
-		<p id="playcard-name">Playing cards</p>
+		<p id="playcard-name">Những lá bài đang chơi</p>
 		<table id="playcard-board">
 			<tr>
 				<td >
@@ -215,12 +215,12 @@
 		</table>
 		<div id="choose-area">
 			<p id="playing-hint"></p>
-			<button id="choose-button" onclick="chooseCard()">Choose</button>
+			<button id="choose-button" onclick="chooseCard()">Chọn</button>
 		</div>
 		
 		<table id="result-board">
 			<tr>
-				<td>Owner</td>
+				<td>Chủ nhân</td>
 				<td id="owner-player0"></td>
 				<td id="owner-player1"></td>
 				<td id="owner-player2"></td>
@@ -229,7 +229,7 @@
 				<td id="owner-player5"></td>
 			</tr>
 			<tr>
-				<td>Card</td>
+				<td>Bài</td>
 				<td><img id="image-playingcard0" class="card-result-board" /></td>
 				<td><img id="image-playingcard1" class="card-result-board" /></td>
 				<td><img id="image-playingcard2" class="card-result-board" /></td>
@@ -238,7 +238,7 @@
 				<td><img id="image-playingcard5" class="card-result-board" /></td>
 			</tr>
 			<tr>
-				<td>Chooser</td>
+				<td>Người chọn</td>
 				<td id="choosers-card0"></td>
 				<td id="choosers-card1"></td>
 				<td id="choosers-card2"></td>
@@ -254,36 +254,36 @@
 		<div class="chat-header">
 			<div class="user-container">
 				<span id="username" th:utext="${username}"></span> <a
-					th:href="@{/logout}">Logout</a>
+					th:href="@{/logout}">Đăng xuất</a>
 			</div>
-			<h3 style="padding-left: 40px;">Chat Room</h3>
+			<h3 style="padding-left: 40px;">Phòng chat</h3>
 		</div>
 
 		<hr />
 
-		<div id="connecting">Connecting...</div>
+		<div id="connecting">Đang kết nối với server...</div>
 		<ul id="messageArea">
 		</ul>
 		<form id="messageForm" name="messageForm">
 			<div class="input-message" style="margin-top: 10px;">
 				<input type="text" id="message" autocomplete="off"
-					placeholder="Type a message..." />
-				<button type="submit" id="message-submit">Send</button>
+					placeholder="Mời nhập tin nhắn" />
+				<button type="submit" id="message-submit">Gửi</button>
 			</div>
 		</form>
 
 		<form th:if="${session.player == null}" id="registerGame"
 			method="post" action="/registerGame">
-			<input type="button" value="Register Game" onclick="registerGame()" />
+			<input type="button" value="Đăng ký chơi" onclick="registerGame()" />
 		</form>
 
 		<div>
 			<p id="player-count">
-				Currently there are <span id="messageCountPlayer"
-					th:utext="${playerCount}">0</span> players joined.
+				Hiện đang có <span id="messageCountPlayer"
+					th:utext="${playerCount}">0</span> người đăng ký chơi.
 			</p>
 			<form id="formStartGame" method='post' action='/startGame'>
-				<input type="button" id="submitStartGame" value="Start Game"
+				<input type="button" id="submitStartGame" value="Bắt đầu chơi"
 					onclick="startGame()" />
 			</form>
 		</div>

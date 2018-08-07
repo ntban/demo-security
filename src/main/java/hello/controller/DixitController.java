@@ -46,38 +46,38 @@ public class DixitController {
 	public @ResponseBody String startGame(HttpServletRequest request) {
 		Player player = (Player) request.getSession().getAttribute("player");
 		if (player == null || player.getFirstPlayer() == null) {
-			return "You can't start game!";
+			return "Chỉ người chơi đầu tiên đăng ký mới được bắt đầu game!";
 		}
 		if (players.size() < 3) {
-			return "You can't start game when not have 3 players !";
+			return "Bạn chưa thể bắt đầu khi chưa đủ 3-6 người chơi!";
 		}
 
 		createCards();
-		noticePlayerService.noticeStart(players);
+		
 		currentPlayer = 0;
 		started = "started";
 		for (int i = 0; i < players.size(); i++) {
-			scores.put(player.getName(), 0);
+			scores.put(players.get(i).getName(), 0);
 		}
-
-		return "Game Started!";
+		noticePlayerService.noticeStart(players, currentPlayer, scores);
+		return "Bắt đầu chơi!";
 	}
 
 	@RequestMapping(path = "/registerGame", method = RequestMethod.POST)
 	public @ResponseBody String registerGame(HttpServletRequest request, Principal principal, Model model) {
 		if (players.size() == 6 || started.equals("started")) {
-			return "Can't register anymore!";
+			return "Không thể đăng ký chơi được nữa!";
 		}
 
 		String username = principal.getName();
 
 		if (username == null) {
-			return "Register Fail!";
+			return "Chưa đăng ký chơi!";
 		}
 
 		for (Player p : players) {
 			if (p.getName().equals(username)) {
-				return "Already Register!";
+				return "Bạn đã đăng ký rồi!";
 			}
 		}
 
@@ -99,7 +99,7 @@ public class DixitController {
 		noticePlayerService.noticeAdd(username);
 		model.addAttribute("username", username);
 
-		return "Register OK!";
+		return "Đăng ký thành công!";
 	}
 
 	List<CardByTurn> cardByTurns = new ArrayList<>();
@@ -109,11 +109,11 @@ public class DixitController {
 		String username = principal.getName();
 
 		if (username == null) {
-			return "Register Fail!";
+			return "Chưa đăng ký chơi!";
 		}
 
 		if (!username.equals(players.get(currentPlayer).getName())) {
-			return "Not your turn!";
+			return "Không phải lượt bạn gợi ý!";
 		}
 
 		String imageCard = request.getParameter("imageCard");
@@ -127,20 +127,27 @@ public class DixitController {
 		// gửi event choose bài đến cho các player khác
 		noticePlayerService.noticeChoose(players, currentPlayer, hint);
 
-		return "Done!";
+		return "Hoàn thành!";
 	}
 
 	@RequestMapping(path = "/chooseOrder", method = RequestMethod.POST)
 	public @ResponseBody String chooseOrder(HttpServletRequest request, Principal principal, Model model) {
 		if (cardByTurns.size() == players.size()) {
-			return "Can't choose anymore!";
+			return "Không thể chọn bài nữa!";
 		}
 
 		String username = principal.getName();
 
 		if (username == null) {
-			return "Register Fail!";
+			return "Chưa đăng ký chơi!";
 		}
+		
+		for(CardByTurn card:cardByTurns){
+			if(card.getOwner().equals(username)){
+				return "Bạn chỉ được chọn bài 1 lần!";
+			}
+		}
+		
 		String imageCard = request.getParameter("imageCard");
 
 		CardByTurn card = new CardByTurn();
@@ -153,7 +160,7 @@ public class DixitController {
 			noticePlayerService.noticeShowCard(cardByTurns, players, currentPlayer);
 		}
 
-		return "Done!";
+		return "Hoàn thành!";
 	}
 
 	List<CardChoose> cardGetScore = new ArrayList<>();
@@ -161,24 +168,30 @@ public class DixitController {
 	@RequestMapping(path = "/chooseGetScore", method = RequestMethod.POST)
 	public @ResponseBody String chooseGetScore(HttpServletRequest request, Principal principal, Model model) {
 		if (cardGetScore.size() == players.size() - 1) {
-			return "Can't choose anymore!";
+			return "Không thể chọn bài nữa!";
 		}
 
 		String username = principal.getName();
 
 		if (username == null) {
-			return "Register Fail!";
+			return "Chưa đăng ký chơi!";
+		}
+		
+		for(CardChoose card:cardGetScore){
+			if(card.getChooser().equals(username)){
+				return "Bạn chỉ được chọn bài 1 lần!";
+			}
 		}
 
 		if (username.equals(players.get(currentPlayer).getName())) {
-			return "It's your turn! You can't choose!";
+			return "Lượt bạn gợi ý mà, bạn không thể chọn!";
 		}
 
 		String imageCard = request.getParameter("imageCard");
 		// TODO: check tự chọn bài mình
 		for (CardByTurn card : cardByTurns) {
 			if (card.getOwner().equals(username) && card.getImageCard().equals(imageCard)) {
-				return "You can't choose your card!";
+				return "Bạn không thể tự chọn bài mình!";
 			}
 		}
 
@@ -200,7 +213,7 @@ public class DixitController {
 			calculateScore();
 		}
 
-		return "Done!";
+		return "Hoàn thành!";
 	}
 
 	private void calculateScore() {
@@ -214,7 +227,7 @@ public class DixitController {
 		}
 
 		for (CardChoose c : cardGetScore) {
-			List<String> choosers = scoreGet.get(c.getOwner());
+			List<String> choosers = scoreGet.get(cardWithOwner.get(c.getOwner()));
 			if (choosers == null) {
 				choosers = new ArrayList<>();
 			}
@@ -222,7 +235,7 @@ public class DixitController {
 			scoreGet.put(cardWithOwner.get(c.getOwner()), choosers);
 		}
 
-		List<String> chooserOfCurrent = scoreGet.get(currentPlayerName);
+		List<String> chooserOfCurrent = scoreGet.get(cardWithOwner.get(currentPlayerName));
 		if (chooserOfCurrent == null) {
 			// TODO: không ai chọn đúng
 			// người gợi ý: 0 điểm, những người còn lại +2 và + thêm
@@ -246,7 +259,7 @@ public class DixitController {
 				scores.put(username, score);
 			}
 		} else {
-			// TODO: không ai chọn đúng
+			// TODO: có người chọn đúng người chọn sai
 			// người gợi ý: 3 điểm, những người chọn đúng +3
 
 			Integer score = scores.get(currentPlayerName);
@@ -272,50 +285,75 @@ public class DixitController {
 		}
 
 		// bắn điểm, bắn kết quả về cho player
-		noticePlayerService.showResult(players, scores, scoreGet);
+		noticePlayerService.showResult(players, scores, scoreGet, cardWithOwner);
 
 		// xoay vòng người kể chuyện
 		currentPlayer = (currentPlayer + 1) % players.size();
+		
+		//bỏ 1 lá bài cũ, thêm 1 lá bài mới cho các người chơi
+		for(Player p:players){
+			
+			Card c = cards.get(CURRENT_USEDCARD_INDEX);
+			String nextCard = "images/" + c.getImage() + "";
+			c.setUsed("used");
+			cardRepository.save(c);
+			CURRENT_USEDCARD_INDEX++;
+			
+			String usedCard = cardWithOwner.get(p.getName()).getImageCard();
+			String currentCards = p.getCards();
+			currentCards = currentCards.replaceAll(usedCard, nextCard);
+			p.setCards(currentCards);
+		}
 		
 		// đưa list bài chơi về cho lượt mới
 		cardByTurns = new ArrayList<>();
 		cardGetScore = new ArrayList<>();
 		
-		// TODO: check xem đã có ai thắng chưa
+		//tạm dừng cho người chơi xem điểm
 		try {
-			Thread.sleep(10*1000);
+			Thread.sleep(20*1000);
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		// TODO: check xem đã có ai thắng chưa
+		
 		int max = -1;
+		String maxOwner = "";
 		for(String key:scores.keySet()){
 			// find max
 			if(scores.get(key) > max){
 				max = scores.get(key);
+				maxOwner = key;
 			}
 		}
 		
-		// TODO: winner! gamne over!
 		if(max >= 30){
+			// TODO: winner! game over!
 			//handle here 
+			noticePlayerService.noticeGameOver(players, "Người chiến thắng là "+ maxOwner + " với " + max + "điểm");
+		}else{
+			//TODO: game continue
+			noticePlayerService.noticeStart(players, currentPlayer, scores);
 		}
 	}
 
+	int CURRENT_USEDCARD_INDEX = 0;
 	private void createCards() {
 		Collections.shuffle(cards);
 
 		// set for players
-		int i = 0;
+		
 		List<Card> cardUsed = new ArrayList<>();
 		for (Player p : players) {
 			String cardOfPlayer = "";
 			for (int j = 0; j < 6; j++) {
-				Card c = cards.get(i);
+				Card c = cards.get(CURRENT_USEDCARD_INDEX);
 				cardOfPlayer += "images/" + c.getImage() + ",";
 				c.setUsed("used");
 				cardUsed.add(c);
-				i++;
+				CURRENT_USEDCARD_INDEX++;
 			}
 			p.setCards(cardOfPlayer);
 		}

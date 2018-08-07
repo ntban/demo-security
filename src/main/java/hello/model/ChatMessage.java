@@ -12,7 +12,7 @@ public class ChatMessage {
         //for game
         PLAY, START, CHOOSE, DONE_HINT,
         SHOW_ONLY, SHOW_CHOOSE,
-        SHOW_RESULT
+        SHOW_RESULT, GAME_OVER
     }
  
     public MessageType getType() {
