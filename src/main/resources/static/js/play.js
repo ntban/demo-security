@@ -31,6 +31,37 @@ function onMessagePlayReceived(payload) {
 		$("#choose-button").attr('disabled', true);
 		
 		alert(message.content);
+	}else if(message.type==='VIEWER_START'){
+		$('#formStartGame').hide();
+		$('#player-count').hide();
+		$("#playcard-container-showhide").hide();
+
+		var data = message.content.split(";");
+		// set rank board
+		var players = data[1].split(",");
+		for (var i = 0; i < players.length; i++) {
+			if (!players[i]) {
+				break;
+			}
+
+			var info = players[i].split(":");
+			$("#name-player" + i).html(info[0]);
+			$("#score-player" + i).html(info[1]);
+		}
+		
+		$("#owncard-container-showhide").show();
+		$("#rank-board").show();
+		$("#your-hint").hide();
+		$("#play-submit").hide();
+		$("#owncard-name").hide();
+		$("#owncard-board").hide();
+	}else if(message.type === 'RESET_GAME'){
+		$("#registerGame").show();
+		$("#messageCountPlayer").html("0");
+		$("#player-count").show();
+		$("#formStartGame").hide();
+		$("#owncard-container-showhide").hide();
+		$("#playcard-container-showhide").hide();
 	}
 }
 
@@ -47,33 +78,33 @@ function startGameWithCards(message) {
 	dw_Tooltip.content_vars = {
 		L1 : {
 			img : image1,
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		},
 		L2 : {
 			img : image2,
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		},
 		L3 : {
 			img : image3,
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		},
 		L4 : {
 			img : image4,
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		},
 		L5 : {
 			img : image5,
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		},
 		L6 : {
 			img : image6,
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		}
 	}
 	$("#L1").attr("src", image1);
@@ -110,13 +141,13 @@ function startGameWithCards(message) {
 		$("input[name='radioOwn']").attr('disabled', true);
 		$("#your-hint").prop('disabled', false);
 		$("#play-submit").attr('disabled', false);
-		$("#your-hint").html("");
+		$("#your-hint").val("");
 		$("#your-hint").attr("placeholder", "Mời nhập gợi ý..");
 	} else {
 		$("input[name='radioOwn']").attr('disabled', true);
 		$("#your-hint").prop('disabled', true);
 		$("#play-submit").attr('disabled', true);
-		$("#your-hint").html("");
+		$("#your-hint").val("");
 		$("#your-hint").attr("placeholder", "Chờ gợi ý..");
 	}
 
@@ -134,24 +165,24 @@ function showImagePlayCards(content) {
 
 	dw_Tooltip.content_vars.L11 = {
 		img : res[0],
-		w : 300,
-		h : 400
+		w : 375,
+		h : 500
 	};
 	$("#L11").attr("src", res[0]);
 	$("#radioPlay1").val(res[0]);
 
 	dw_Tooltip.content_vars.L12 = {
 		img : res[1],
-		w : 300,
-		h : 400
+		w : 375,
+		h : 500
 	};
 	$("#L12").attr("src", res[1]);
 	$("#radioPlay2").val(res[1]);
 
 	dw_Tooltip.content_vars.L13 = {
 		img : res[2],
-		w : 300,
-		h : 400
+		w : 375,
+		h : 500
 	};
 	$("#L13").attr("src", res[2]);
 	$("#radioPlay3").val(res[2]);
@@ -159,39 +190,42 @@ function showImagePlayCards(content) {
 	if (res.length >= 4) {
 		dw_Tooltip.content_vars.L14 = {
 			img : res[3],
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		};
 		$("#L14").attr("src", res[3]);
 		$("#radioPlay4").val(res[3]);
 	}else{
 		$("#L14").attr("src", "");
+		$("#L14").hide();
 		$("#checkmarkL14").hide();
 	}
 
 	if (res.length >= 5) {
 		dw_Tooltip.content_vars.L15 = {
 			img : res[4],
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		};
 		$("#L15").attr("src", res[4]);
 		$("#radioPlay5").val(res[4]);
 	}else{
 		$("#L15").attr("src", "");
+		$("#L15").hide();
 		$("#checkmarkL15").hide();
 	}
 
 	if (res.length >= 6) {
 		dw_Tooltip.content_vars.L16 = {
 			img : res[5],
-			w : 300,
-			h : 400
+			w : 375,
+			h : 500
 		};
 		$("#L16").attr("src", res[5]);
 		$("#radioPlay6").val(res[5]);
 	}else{
 		$("#L16").attr("src", "");
+		$("#L16").hide();
 		$("#checkmarkL16").hide();
 	}
 

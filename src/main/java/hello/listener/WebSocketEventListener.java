@@ -23,10 +23,8 @@ public class WebSocketEventListener {
    @EventListener
    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
        logger.info("Received a new web socket connection");
+       
    }
-//   
-//   @Autowired
-//   PlayerRepository playerRepository;
 
    @EventListener
    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
@@ -36,12 +34,11 @@ public class WebSocketEventListener {
        
        if(username != null) {
            logger.info("User Disconnected : " + username);
-//           playerRepository.deletePlayer(username);
 
            ChatMessage chatMessage = new ChatMessage();
            chatMessage.setType(ChatMessage.MessageType.LEAVE);
            chatMessage.setSender(username);
-
+           
            messagingTemplate.convertAndSend("/topic/publicChatRoom", chatMessage);
        }
    }

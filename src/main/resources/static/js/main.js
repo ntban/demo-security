@@ -57,46 +57,37 @@ function sendMessage(event) {
 	event.preventDefault();
 }
 
+
+
 function onMessageReceived(payload) {
 	var message = JSON.parse(payload.body);
 
-	var messageElement = document.createElement('li');
+	var messageElement = "";
 
 	if (message.type === 'JOIN') {
-		messageElement.classList.add('event-message');
+		messageElement += '<li class="event-message">'; 
 		message.content = message.sender + ' đã vào phòng chat!';
 	} else if (message.type === 'LEAVE') {
-		messageElement.classList.add('event-message');
-		message.content = message.sender + ' left!';
+		messageElement += '<li class="event-message">';
+		message.content = message.sender + ' đã rời phòng chat!';
 	} else if (message.type === 'CHAT') {
-		messageElement.classList.add('chat-message');
-		var usernameElement = document.createElement('strong');
-		usernameElement.classList.add('nickname');
-		var usernameText = document.createTextNode(message.sender);
-		var usernameText = document.createTextNode(message.sender);
-		usernameElement.appendChild(usernameText);
-		messageElement.appendChild(usernameElement);
+		messageElement += '<li class="chat-message">';
+		var usernameElement = '<strong class="nickname">' + message.sender +'</strong>';
+		messageElement += usernameElement;
 	}else if (message.type === 'PLAY') {
 		var numberPlayer = parseInt(message.content);
 		$('#messageCountPlayer').html(numberPlayer);
 		return; 
 	}
 
-	var textElement = document.createElement('span');
-	var messageText = document.createTextNode(message.content);
-	textElement.appendChild(messageText);
-
-	messageElement.appendChild(textElement);
-
-	messageArea.appendChild(messageElement);
+	var content = message.content;
+	for(var i = 0 ; i < hotkeys.length; i++){
+		content = content.replace(new RegExp(hotkeys[i], 'g'), emoticons[i]);
+	}
+	messageElement += content+"</li>";
+	$('#messageArea').append(messageElement);
+	
 	messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 messageForm.addEventListener('submit', sendMessage, true);
-
-$('#your-hint').keypress(function (e) {
-	  if (e.which == 13) {
-		playSubmit();
-	    return false;    //<---- Add this line
-	  }
-});

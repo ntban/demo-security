@@ -4,13 +4,13 @@
 <title>Dixit Game</title>
 <link rel="stylesheet" th:href="@{/css/main.css}" />
 <link rel="stylesheet" th:href="@{/css/card-page.css}" />
+<!-- <link rel="stylesheet" th:href="@{/css/emojionearea.css}"/> -->
 
 <script th:src="@{/js/lib/sockjs.min.js}"></script>
 <script th:src="@{/js/lib/stomp.min.js}"></script>
 <script th:src="@{/js/lib/jquery.min.js}"></script>
-
+<!-- <script th:src="@{/js/lib/emojionearea.js}"></script> -->
 <script th:src="@{/js/dw_tooltip_c.js}"></script>
-
 </head>
 <script type="text/javascript">
 	var currentDixitHintPlayer = "";
@@ -20,12 +20,31 @@
 	    //supportTouch: true, // set false by default
 	    wrapFn: dw_Tooltip.wrapImageToWidth
 	}
+	dw_Tooltip.content_vars = {
+	}
 		
 </script>
+<script >
+		var emoticons = [
+			'<img src="emojis/angel.png" width="26px" />','<img src="emojis/angry.png" width="26px" />','<img src="emojis/astonished.png" width="26px" />','<img src="emojis/confuse.png" width="26px" />','<img src="emojis/cry.png" width="26px" />','<img src="emojis/cute.png" width="26px" />','<img src="emojis/devil.png" width="26px" />','<img src="emojis/gasp.png" width="26px" />','<img src="emojis/glasses.png" width="26px" />','<img src="emojis/grin.png" width="26px" />','<img src="emojis/grumpy.png" width="26px" />','<img src="emojis/heart.png" width="26px" />','<img src="emojis/joytears.png" width="26px" />','<img src="emojis/kiss.png" width="26px" />','<img src="emojis/pacman.png" width="26px" />','<img src="emojis/sad.png" width="26px" />','<img src="emojis/smile.png" width="26px" />','<img src="emojis/squint.png" width="26px" />','<img src="emojis/tongue.png" width="26px" />','<img src="emojis/unsure.png" width="26px" />','<img src="emojis/upset.png" width="26px" />','<img src="emojis/wink.png" width="26px" />',
+			'<img src="emojis/mask.png" width="26px" />','<img src="emojis/angry.png" width="26px" />','<img src="emojis/astonished.png" width="26px" />','<img src="emojis/confuse.png" width="26px" />','<img src="emojis/cry.png" width="26px" />','<img src="emojis/cute.png" width="26px" />','<img src="emojis/devil.png" width="26px" />','<img src="emojis/gasp.png" width="26px" />','<img src="emojis/glasses.png" width="26px" />','<img src="emojis/grin.png" width="26px" />','<img src="emojis/grumpy.png" width="26px" />','<img src="emojis/heart.png" width="26px" />','<img src="emojis/joytears.png" width="26px" />','<img src="emojis/kiss.png" width="26px" />','<img src="emojis/pacman.png" width="26px" />','<img src="emojis/sad.png" width="26px" />','<img src="emojis/smile.png" width="26px" />','<img src="emojis/squint.png" width="26px" />','<img src="emojis/tongue.png" width="26px" />','<img src="emojis/unsure.png" width="26px" />','<img src="emojis/upset.png" width="26px" />','<img src="emojis/wink.png" width="26px" />'
+		];
+
+		var hotkeys = [
+			':angel:',':angry:',':O',':confuse:',':cry:',':3','T_T',':gasp:',':glasses:',':smile:',':grumpy:',':love:',':haha:',':kiss:',':v',':so_sad:',':D','-_-',':P',':question:',':upset:',':hihi:',
+			':x',':angry:',':astonished:',':confuse:',':cry:',':cute:',':devil:',':gasp:',':glasses:',':grin:',':grumpy:',':heart:',':joytears:',':kiss:',':pacman:',':sad:',':smile:',':squint:',':tongue:',':unsure:',':upset:',':wink:'
+		];
+
+</script>
+<!-- <script type="text/javascript">
+    $(document).ready(function () {
+      $("#message").emojioneArea();
+    });
+  </script> -->
 <body>
 	<div id="owncard-container">
 		<div id="owncard-container-showhide">
-		<p id="owncard-name">Những lá bài hiện tại của bạn</p>
+		<p id="owncard-name">Bài của bạn</p>
 		<table id="owncard-board">
 			<tr>
 				<td >
@@ -134,7 +153,7 @@
 	
 	<div id="playcard-container">
 	<div id="playcard-container-showhide">
-		<p id="playcard-name">Những lá bài đang chơi</p>
+		<p id="playcard-name">Bài đang chơi</p>
 		<table id="playcard-board">
 			<tr>
 				<td >
@@ -229,7 +248,7 @@
 				<td id="owner-player5"></td>
 			</tr>
 			<tr>
-				<td>Bài</td>
+				<td>Lá bài</td>
 				<td><img id="image-playingcard0" class="card-result-board" /></td>
 				<td><img id="image-playingcard1" class="card-result-board" /></td>
 				<td><img id="image-playingcard2" class="card-result-board" /></td>

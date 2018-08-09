@@ -21,7 +21,7 @@ public class DataController {
 	@GetMapping("/create-cards")
 	public void createCards() {
 		List<Card> cards = new ArrayList<>();
-		for(int i=0;i<150;i++){
+		for(int i=149;i<309;i++){
 			Card c = new Card("_"+i+".jpg");
 			c.setId(i);
 			c.setUsed("unused");

@@ -44,6 +44,9 @@ public class DixitController {
 
 	@RequestMapping(path = "/startGame", method = RequestMethod.POST)
 	public @ResponseBody String startGame(HttpServletRequest request) {
+		if (started.equals("started")) {
+			return "Đã bắt đầu chơi!";
+		}
 		Player player = (Player) request.getSession().getAttribute("player");
 		if (player == null || player.getFirstPlayer() == null) {
 			return "Chỉ người chơi đầu tiên đăng ký mới được bắt đầu game!";
@@ -53,7 +56,7 @@ public class DixitController {
 		}
 
 		createCards();
-		
+
 		currentPlayer = 0;
 		started = "started";
 		for (int i = 0; i < players.size(); i++) {
@@ -117,6 +120,19 @@ public class DixitController {
 		}
 
 		String imageCard = request.getParameter("imageCard");
+
+		// TODO: check chống chọn bài khác
+		String yourImage = "";
+		for (Player p : players) {
+			if (p.getName().equals(username)) {
+				yourImage = p.getCards();
+				break;
+			}
+		}
+		if (!yourImage.contains(imageCard)) {
+			return "Bạn chỉ được chọn trong số 6 lá của mình!";
+		}
+
 		String hint = request.getParameter("hint");
 		CardByTurn card = new CardByTurn();
 		card.setHint(hint);
@@ -141,14 +157,39 @@ public class DixitController {
 		if (username == null) {
 			return "Chưa đăng ký chơi!";
 		}
-		
-		for(CardByTurn card:cardByTurns){
-			if(card.getOwner().equals(username)){
+
+		// TODO: check chống người xem phá game
+		boolean canChoose = false;
+		for (Player p : players) {
+			if (p.getName().equals(username) && !username.equals(players.get(currentPlayer).getName())) {
+				canChoose = true;
+				break;
+			}
+		}
+
+		if (!canChoose) {
+			return "Bạn không thể chọn bài!";
+		}
+
+		for (CardByTurn card : cardByTurns) {
+			if (card.getOwner().equals(username)) {
 				return "Bạn chỉ được chọn bài 1 lần!";
 			}
 		}
-		
+
 		String imageCard = request.getParameter("imageCard");
+
+		// TODO: check chống chọn bài khác
+		String yourImage = "";
+		for (Player p : players) {
+			if (p.getName().equals(username)) {
+				yourImage = p.getCards();
+				break;
+			}
+		}
+		if (!yourImage.contains(imageCard)) {
+			return "Bạn chỉ được chọn trong số 6 lá của mình!";
+		}
 
 		CardByTurn card = new CardByTurn();
 		card.setImageCard(imageCard);
@@ -176,18 +217,41 @@ public class DixitController {
 		if (username == null) {
 			return "Chưa đăng ký chơi!";
 		}
-		
-		for(CardChoose card:cardGetScore){
-			if(card.getChooser().equals(username)){
+		if (username.equals(players.get(currentPlayer).getName())) {
+			return "Lượt bạn gợi ý mà, bạn không thể chọn!";
+		}
+		// TODO: check chống người xem phá game
+		boolean canChoose = false;
+		for (Player p : players) {
+			if (p.getName().equals(username) && !username.equals(players.get(currentPlayer).getName())) {
+				canChoose = true;
+				break;
+			}
+		}
+		if (!canChoose) {
+			return "Bạn không thể chọn bài!";
+		}
+
+		for (CardChoose card : cardGetScore) {
+			if (card.getChooser().equals(username)) {
 				return "Bạn chỉ được chọn bài 1 lần!";
 			}
 		}
 
-		if (username.equals(players.get(currentPlayer).getName())) {
-			return "Lượt bạn gợi ý mà, bạn không thể chọn!";
+		String imageCard = request.getParameter("imageCard");
+
+		// TODO: check chống chọn bài ngoài
+		boolean inCard = false;
+		for (CardByTurn card : cardByTurns) {
+			if (card.getImageCard().equals(imageCard)) {
+				inCard = true;
+				break;
+			}
+		}
+		if (!inCard) {
+			return "Bạn chỉ được chọn trong số các lá đang được đưa ra!";
 		}
 
-		String imageCard = request.getParameter("imageCard");
 		// TODO: check tự chọn bài mình
 		for (CardByTurn card : cardByTurns) {
 			if (card.getOwner().equals(username) && card.getImageCard().equals(imageCard)) {
@@ -238,12 +302,21 @@ public class DixitController {
 		List<String> chooserOfCurrent = scoreGet.get(cardWithOwner.get(currentPlayerName));
 		if (chooserOfCurrent == null) {
 			// TODO: không ai chọn đúng
-			// người gợi ý: 0 điểm, những người còn lại +2 và + thêm
-			// số người chọn bài mình
+			// người gợi ý: 0 điểm, những người còn lại +2
+			for (Player p : players) {
+				String username = p.getName();
+				if (username.equals(currentPlayerName)) {
+					continue;
+				}
+				Integer score = scores.get(username);
+				score += 2;
+				scores.put(username, score);
+			}
+			// và + thêm số người chọn bài mình
 			for (CardByTurn key : scoreGet.keySet()) {
 				String username = key.getOwner();
 				Integer score = scores.get(username);
-				score += (2 + scoreGet.get(key).size());
+				score += scoreGet.get(key).size();
 				scores.put(username, score);
 			}
 		} else if (chooserOfCurrent.size() == players.size() - 1) {
@@ -285,66 +358,81 @@ public class DixitController {
 		}
 
 		// bắn điểm, bắn kết quả về cho player
-		noticePlayerService.showResult(players, scores, scoreGet, cardWithOwner);
+		noticePlayerService.showResult(players, scores, scoreGet, cardWithOwner, currentPlayer);
 
 		// xoay vòng người kể chuyện
 		currentPlayer = (currentPlayer + 1) % players.size();
-		
-		//bỏ 1 lá bài cũ, thêm 1 lá bài mới cho các người chơi
-		for(Player p:players){
-			
+
+		// bỏ 1 lá bài cũ, thêm 1 lá bài mới cho các người chơi
+		for (Player p : players) {
+
 			Card c = cards.get(CURRENT_USEDCARD_INDEX);
 			String nextCard = "images/" + c.getImage() + "";
 			c.setUsed("used");
 			cardRepository.save(c);
 			CURRENT_USEDCARD_INDEX++;
-			
+
 			String usedCard = cardWithOwner.get(p.getName()).getImageCard();
 			String currentCards = p.getCards();
 			currentCards = currentCards.replaceAll(usedCard, nextCard);
 			p.setCards(currentCards);
 		}
-		
+
 		// đưa list bài chơi về cho lượt mới
 		cardByTurns = new ArrayList<>();
 		cardGetScore = new ArrayList<>();
-		
-		//tạm dừng cho người chơi xem điểm
+
+		// tạm dừng cho người chơi xem điểm
 		try {
-			Thread.sleep(20*1000);
+			Thread.sleep(10 * 1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		// TODO: check xem đã có ai thắng chưa
-		
+
 		int max = -1;
 		String maxOwner = "";
-		for(String key:scores.keySet()){
+		for (String key : scores.keySet()) {
 			// find max
-			if(scores.get(key) > max){
+			if (scores.get(key) > max) {
 				max = scores.get(key);
 				maxOwner = key;
 			}
 		}
-		
-		if(max >= 30){
+
+		if (max >= 5) {
 			// TODO: winner! game over!
-			//handle here 
-			noticePlayerService.noticeGameOver(players, "Người chiến thắng là "+ maxOwner + " với " + max + "điểm");
-		}else{
-			//TODO: game continue
+			// handle here
+			noticePlayerService.noticeGameOver(players,
+					"Người chiến thắng là " + maxOwner + " với " + max + " điểm");
+
+			// reset game
+			started = "";
+
+			for (Player p : players) {
+				playerRepository.deletePlayer(p.getName());
+			}
+			cardRepository.resetCard();
+
+			players = new ArrayList<>();
+			scores = new HashMap<>();
+			noticePlayerService.noticeReset();
+
+		} else {
+			// TODO: game continue
 			noticePlayerService.noticeStart(players, currentPlayer, scores);
 		}
 	}
 
 	int CURRENT_USEDCARD_INDEX = 0;
+
 	private void createCards() {
 		Collections.shuffle(cards);
 
 		// set for players
-		
+
 		List<Card> cardUsed = new ArrayList<>();
 		for (Player p : players) {
 			String cardOfPlayer = "";

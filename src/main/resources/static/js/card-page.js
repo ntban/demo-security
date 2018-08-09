@@ -5,6 +5,16 @@ function playSubmit(){
 		var hint = $('#your-hint').val();
 		var imageCard = $("input[name='radioOwn']:checked").val();
 		
+		if(!imageCard){
+			alert("Bạn chưa chọn lá bài nào!");
+			return;
+		}
+		if(!hint){
+			alert("Bạn chưa gợi ý !");
+			return;
+			
+		}
+		$('input[name="radioOwn"]').attr('checked', false);
 		$.ajax({
 		    type: "POST",
 		    url: "/hintOrder",
@@ -21,6 +31,11 @@ function playSubmit(){
 		
 	}else{// give card 
 		var imageCard = $("input[name='radioOwn']:checked").val();
+		if(!imageCard){
+			alert("Bạn chưa chọn lá bài nào!");
+			return;
+		}
+		$('input[name="radioOwn"]').attr('checked', false);
 		$.ajax({
 		    type: "POST",
 		    url: "/chooseOrder",
@@ -34,15 +49,20 @@ function playSubmit(){
 		    }
 		});
 	}
+	
 }
 
 function chooseCard(){
 	var imageCard = $("input[name='radioPlay']:checked").val();
+	if(!imageCard){
+		alert("Bạn chưa chọn lá bài nào!");
+		return;
+	}
 	if(currentOwnImageCard == imageCard){
 		alert("Bạn không thể tự chọn bài mình!");
 		return;
 	}
-	
+	$('input[name="radioPlay"]').attr('checked', false);
 	$.ajax({
 	    type: "POST",
 	    url: "/chooseGetScore",
